@@ -2,7 +2,9 @@ from pathlib import Path
 
 OLLAMA_URL = "http://localhost:11434/api/chat"
 
-MODEL = "qwen3"
+DEFAULT_MODEL = "qwen3"
+
+REQUEST_TIMEOUT = 300
 
 DATA_DIR = Path("data")
 

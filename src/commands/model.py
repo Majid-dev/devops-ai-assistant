@@ -1,7 +1,16 @@
-class ModelCommand:
+from commands.base_command import BaseCommand
+
+
+class ModelCommand(BaseCommand):
+
+    name = "model"
+
+    description = "Show current model"
 
     def execute(self, args, context):
 
-        print(context["model"])
+        console = context["console"]
 
-        return True
+        ollama = context["ollama"]
+
+        console.info(f"Current model: {ollama.model}")

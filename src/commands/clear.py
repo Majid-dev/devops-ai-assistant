@@ -1,11 +1,18 @@
-class ClearCommand:
+from commands.base_command import BaseCommand
+
+
+class ClearCommand(BaseCommand):
+
+    name = "clear"
+
+    description = "Clear conversation history"
 
     def execute(self, args, context):
 
-        context["history"].messages.clear()
+        history = context["history"]
 
-        context["history"].save()
+        console = context["console"]
 
-        print("History cleared.")
+        history.clear()
 
-        return True
+        console.success("History cleared.")

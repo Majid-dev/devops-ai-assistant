@@ -1,9 +1,34 @@
-class HistoryCommand:
+from commands.base_command import BaseCommand
+
+
+class HistoryCommand(BaseCommand):
+
+    name = "history"
+
+    description = "Show conversation history"
 
     def execute(self, args, context):
 
-        for msg in context["history"].messages:
+        history = context["history"]
 
-            print(f"{msg['role']}: {msg['content']}")
+        console = context["console"]
 
-        return True
+        messages = history.get_messages()
+
+        if not messages:
+
+            console.info("History is empty.")
+
+            return
+
+        console.info("")
+
+        for message in messages:
+
+            role = message["role"]
+
+            content = message["content"]
+
+            console.info(f"{role}: {content}")
+
+        console.info("")

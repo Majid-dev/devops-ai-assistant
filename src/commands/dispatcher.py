@@ -1,27 +1,45 @@
-from commands.clear import ClearCommand
 from commands.help import HelpCommand
+from commands.clear import ClearCommand
 from commands.history import HistoryCommand
 from commands.model import ModelCommand
 
 
-COMMANDS = {
-    "clear": ClearCommand(),
-    "help": HelpCommand(),
-    "history": HistoryCommand(),
-    "model": ModelCommand(),
-}
+class CommandDispatcher:
 
+    def __init__(self):
 
-def dispatch(command_line, context):
+        self.commands = {}
 
-    parts = command_line.strip().split()
+        self.register(HelpCommand())
+        self.register(ClearCommand())
+        self.register(HistoryCommand())
+        self.register(ModelCommand())
 
-    command = parts[0][1:]
+    def register(self, command):
 
-    args = parts[1:]
+        self.commands[command.name] = command
 
-    if command not in COMMANDS:
-        print("Unknown command.")
+    def dispatch(self, text, context):
+
+        parts = text.strip().split()
+
+        if not parts:
+            return False
+
+        command_name = parts[0][1:]
+
+        args = parts[1:]
+
+        command = self.commands.get(command_name)
+
+        if command is None:
+
+            context["console"].error(
+                f"Unknown command: {command_name}"
+            )
+
+            return True
+
+        command.execute(args, context)
+
         return True
-
-    return COMMANDS[command].execute(args, context)

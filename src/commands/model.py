@@ -9,8 +9,8 @@ class ModelCommand(BaseCommand):
 
     def execute(self, args, context):
 
-        console = context["console"]
+        console = context.console
 
-        ollama = context["ollama"]
+        ollama = context.ollama
 
         console.info(f"Current model: {ollama.model}")

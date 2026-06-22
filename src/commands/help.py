@@ -9,9 +9,9 @@ class HelpCommand(BaseCommand):
 
     def execute(self, args, context):
 
-        console = context["console"]
+        console = context.console
 
-        dispatcher = context["dispatcher"]
+        dispatcher = context.dispatcher
 
         console.info("")
 

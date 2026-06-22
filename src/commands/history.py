@@ -9,9 +9,9 @@ class HistoryCommand(BaseCommand):
 
     def execute(self, args, context):
 
-        history = context["history"]
+        history = context.history
 
-        console = context["console"]
+        console = context.console
 
         messages = history.get_messages()
 

@@ -34,7 +34,7 @@ class CommandDispatcher:
 
         if command is None:
 
-            context["console"].error(
+            context.console.error(
                 f"Unknown command: {command_name}"
             )
 

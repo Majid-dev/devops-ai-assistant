@@ -1,20 +1,30 @@
+from __future__ import annotations
+
 import json
 from pathlib import Path
 
+from core.roles import Role
+
 
 class HistoryManager:
+    """
+    Stores and persists chat history.
+    """
 
     def __init__(self, history_file: Path):
 
         self.history_file = history_file
 
-        self.messages = []
+        self.messages: list[dict] = []
 
         self.load()
 
     def load(self):
 
-        self.history_file.parent.mkdir(parents=True, exist_ok=True)
+        self.history_file.parent.mkdir(
+            parents=True,
+            exist_ok=True
+        )
 
         if not self.history_file.exists():
 
@@ -23,13 +33,21 @@ class HistoryManager:
                 encoding="utf-8"
             )
 
-        with open(
-            self.history_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
+        try:
 
-            self.messages = json.load(f)
+            with open(
+                self.history_file,
+                "r",
+                encoding="utf-8"
+            ) as f:
+
+                self.messages = json.load(f)
+
+        except json.JSONDecodeError:
+
+            self.messages = []
+
+            self.save()
 
     def save(self):
 
@@ -46,13 +64,19 @@ class HistoryManager:
                 ensure_ascii=False
             )
 
-    def add(self, role, content):
+    def add(
+        self,
+        role: Role,
+        content: str
+    ) -> None:
 
         self.messages.append(
+
             {
-                "role": role,
+                "role": role.value,
                 "content": content
             }
+
         )
 
         self.save()
@@ -66,3 +90,7 @@ class HistoryManager:
     def get_messages(self):
 
         return self.messages
+
+    def count(self):
+
+        return len(self.messages)
